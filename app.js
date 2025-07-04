@@ -9,6 +9,7 @@ const dotenv = require('dotenv').config();
 
 //routes link
 const userRoutes = require('./api/routes/users');
+const productRoutes = require('./api/routes/products');
 
 
 mongoose.connect(process.env.MONGO_URI);
@@ -45,6 +46,7 @@ app.use((req, res, next) => {
 
 // routes
 app.use('/users', userRoutes);
+app.use('/products', productRoutes);
 
 
 app.use((req, res, next) => {
