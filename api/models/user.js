@@ -12,6 +12,7 @@ const userSchema = mongoose.Schema({
     email: { type: String },
 
     address: { type: String },
+    zone: { type: String },
 
     cart: [{
         product: { type: mongoose.Schema.Types.ObjectId, required: true },

@@ -98,7 +98,7 @@ exports.getViewer = async (req, res) => {
 
 exports.loginUser = async (req, res, next) => {
     try {
-        User.find({ username: req.body.username })
+        User.find({ email: req.body.email })
             .exec()
             .then(user => {
                 if (user.length < 1) {
