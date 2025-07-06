@@ -5,7 +5,9 @@ const authentication = require('../middlewares/authentication');
 
 
 router.get('/', productController.getProducts);
-router.post('/create', authentication, productController.createProduct);
-router.post('/upddate/:productId', productController.updateProduct);
+router.post('/', authentication, productController.createProduct);
+router.post('/update/:productId', productController.updateProduct);
+router.delete('/:productId', productController.delete);
+router.put('/:productId', productController.updateProduct);
 
 module.exports = router;

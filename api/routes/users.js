@@ -8,10 +8,9 @@ const UsersController = require('../controllers/users.js');
 
 router.get('/', UsersController.getUser);
 router.get('/viewer', authentication, UsersController.getViewer);
-
 router.post('/loginUser', UsersController.loginUser);
-
 router.post('/create', UsersController.createUser);
+
 
 
 

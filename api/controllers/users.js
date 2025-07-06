@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
+const Product = require('../models/product');
 
 const performUpdate = (id, updateFields, res) => {
     User.findByIdAndUpdate(id, updateFields, { new: true })
@@ -191,3 +192,4 @@ exports.createUser = async (req, res) => {
         });
     }
 };
+

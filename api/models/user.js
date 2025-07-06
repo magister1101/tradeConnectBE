@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { ref } = require('process');
 
 const userSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -15,7 +16,7 @@ const userSchema = mongoose.Schema({
     zone: { type: String },
 
     cart: [{
-        product: { type: mongoose.Schema.Types.ObjectId, required: true },
+        product: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Product' },
         quantity: { type: Number, default: 1 }
     }],
 

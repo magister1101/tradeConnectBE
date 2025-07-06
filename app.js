@@ -10,6 +10,9 @@ const dotenv = require('dotenv').config();
 //routes link
 const userRoutes = require('./api/routes/users');
 const productRoutes = require('./api/routes/products');
+const cartRoutes = require('./api/routes/carts');
+const orderRoutes = require('./api/routes/orders');
+const postRoutes = require('./api/routes/posts');
 
 
 mongoose.connect(process.env.MONGO_URI);
@@ -47,6 +50,9 @@ app.use((req, res, next) => {
 // routes
 app.use('/users', userRoutes);
 app.use('/products', productRoutes);
+app.use('/cart', cartRoutes);
+app.use('/orders', orderRoutes);
+app.use('/posts', postRoutes);
 
 
 app.use((req, res, next) => {
