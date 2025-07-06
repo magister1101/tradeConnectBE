@@ -10,6 +10,7 @@ router.get('/', UsersController.getUser);
 router.get('/viewer', authentication, UsersController.getViewer);
 router.post('/loginUser', UsersController.loginUser);
 router.post('/create', UsersController.createUser);
+router.post('/verify/:id', UsersController.updateUser);
 
 
 

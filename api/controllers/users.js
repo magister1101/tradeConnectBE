@@ -107,41 +107,44 @@ exports.loginUser = async (req, res, next) => {
                         message: 'Username does not exist'
                     });
                 }
-                if (!user[0].isArchived) {
-                    bcrypt.compare(req.body.password, user[0].password, (err, result) => {
-                        if (err) {
-                            return res.status(401).json({
-                                message: 'Incorrect Password'
-                            });
-                        }
-                        if (result) {
-                            const token = jwt.sign({
-                                userId: user[0]._id,
-                                username: user[0].username,
-                            },
-                                process.env.JWT_SECRET,
-                                {
-                                    expiresIn: "24h"
-                                }
-                            )
 
-                            return res.status(200).json({
-                                message: 'Login Successfully',
-                                token: token,
-                            });
-                        }
-                        return res.status(401).json({
-                            message: 'Login Failed'
-                        });
-                    })
-                } else {
+                if (user[0].isArchived) {
                     return res.status(401).json({
                         message: 'Auth Failed'
                     });
                 }
-            })
-    }
-    catch (error) {
+
+                if (!user[0].isVerified) {
+                    return res.status(403).json({
+                        message: 'Account not verified'
+                    });
+                }
+
+                bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+                    if (err || !result) {
+                        return res.status(401).json({
+                            message: 'Incorrect Password'
+                        });
+                    }
+
+                    const token = jwt.sign(
+                        {
+                            userId: user[0]._id,
+                            username: user[0].username,
+                        },
+                        process.env.JWT_SECRET,
+                        {
+                            expiresIn: "24h"
+                        }
+                    );
+
+                    return res.status(200).json({
+                        message: 'Login Successfully',
+                        token: token,
+                    });
+                });
+            });
+    } catch (error) {
         console.error('Error logging in user:', error);
         return res.status(500).json({
             message: "Error in logging in user",
@@ -149,6 +152,7 @@ exports.loginUser = async (req, res, next) => {
         });
     }
 };
+
 
 exports.createUser = async (req, res) => {
     try {
@@ -175,6 +179,8 @@ exports.createUser = async (req, res) => {
             email: req.body.email,
 
             address: req.body.address,
+            file: req.body.file,
+            isVerified: req.body.isVerified,
 
             isArchived: req.body.isArchived,
         });
@@ -192,4 +198,23 @@ exports.createUser = async (req, res) => {
         });
     }
 };
+
+exports.updateUser = async (req, res) => {
+    try {
+        const updatedUser = await User.findByIdAndUpdate(
+            req.params.id,
+            { isVerified: req.body.isVerified },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json(updatedUser);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error updating user verification', error: err });
+    }
+}
 
